@@ -12,6 +12,5 @@ git pull
 git status
 git log
 
-
 git stash 
 git stash pop
