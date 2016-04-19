@@ -48,28 +48,39 @@ function MainScene:onCreate()
 
 	for i=1,10 do
 		log(i,i+100)
-		local item = ccui.Layout:create()
-		item:setContentSize(400,100)
-        item:setBackGroundColorType(ccui.LayoutBackGroundColorType.solid)
-        item:setBackGroundColor(cc.c3b(math.random(0,255), math.random(0,255), math.random(0,255)))
-		listView:addChild(item)
-	    local ClipNode = cc.ClippingNode:create()
-	    local maskNode = cc.Node:create()
-	    maskNode:addChild(cc.Sprite:create("mask.png"))
-	    ClipNode:setAlphaThreshold(0)
-	    ClipNode:setStencil(maskNode)
-	    ClipNode:addChild(cc.Sprite:createWithTexture(display.getImage("3DS - Pokemon Battle Trozei - Small Pokemon Icons.png"),
-	    	cc.rect(math.random(1,500),math.random(1,500),100,100)))
-	    ClipNode:setPosition(cc.p(50,50))
+		if math.fmod(i,2) == 0 then
+			local item = ccui.Layout:create()
+			item:setContentSize(400,100)
+	        item:setBackGroundColorType(ccui.LayoutBackGroundColorType.solid)
+	        item:setBackGroundColor(cc.c3b(math.random(0,255), math.random(0,255), math.random(0,255)))
+			listView:addChild(item)
+		    local ClipNode = cc.ClippingNode:create()
+		    local maskNode = cc.Node:create()
+		    maskNode:addChild(cc.Sprite:create("mask.png"))
+		    ClipNode:setAlphaThreshold(0)
+		    ClipNode:setStencil(maskNode)
+		    ClipNode:addChild(cc.Sprite:createWithTexture(display.getImage("3DS - Pokemon Battle Trozei - Small Pokemon Icons.png"),
+		    	cc.rect(math.random(1,500),math.random(1,500),100,100)))
+		    ClipNode:setPosition(cc.p(50,50))
 
-	    -- local target = cc.RenderTexture:create(100, 100, cc.TEXTURE2_D_PIXEL_FORMAT_RGB_A8888)
-		-- target:begin()
-		-- ClipNode:visit()
-		-- target:endToLua()
-		-- target:setPosition(50,50)
-		-- item:addChild(target)
+		    -- local target = cc.RenderTexture:create(100, 100, cc.TEXTURE2_D_PIXEL_FORMAT_RGB_A8888)
+			-- target:begin()
+			-- ClipNode:visit()
+			-- target:endToLua()
+			-- target:setPosition(50,50)
+			-- item:addChild(target)
+			-- item:addChild(ClipNode)
+		else
 
-		item:addChild(ClipNode)
+			local btn = ccui.Button:create("btn.png","btn.png"
+				-- cc.Sprite:createWithTexture(display.getImage("3DS - Pokemon Battle Trozei - Small Pokemon Icons.png"),
+		  --   	cc.rect(math.random(1,500),math.random(1,500),100,100)),
+		  --   	cc.Sprite:createWithTexture(display.getImage("3DS - Pokemon Battle Trozei - Small Pokemon Icons.png"),
+		  --   	cc.rect(math.random(1,500),math.random(1,500),100,100))
+		    	)
+			listView:addChild(btn)
+		end
+
 	end
 
 end
