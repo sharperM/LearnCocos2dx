@@ -6,13 +6,82 @@ function MainScene:onCreate()
         :move(display.center)
         :addTo(self)
 
-    -- add HelloWorld label
+     -- self:addChild(self:createMonsterLayer())
+     self:LoadImg()
+
+
+
+    local function listViewEvent(sender, eventType)
+        if eventType == ccui.ListViewEventType.ONSELECTEDITEM_START then
+            print("select child index = ",sender:getCurSelectedIndex())
+        end
+    end
+
+    local function scrollViewEvent(sender, evenType)
+        if evenType == ccui.ScrollviewEventType.scrollToBottom then
+            print("SCROLL_TO_BOTTOM")
+        elseif evenType ==  ccui.ScrollviewEventType.scrollToTop then
+            print("SCROLL_TO_TOP")
+        end
+    end
+    local backgroundSize = self:getContentSize()
+    local widgetSize = {["width"] = 100,["height"] = 100}
+    local listView = ccui.ListView:create()
+    -- set list view ex direction
+    listView:setDirection(ccui.ScrollViewDir.vertical)
+    listView:setBounceEnabled(true)
+    -- listView:setBackGroundImage("cocosui/green_edit.png")
+    listView:setBackGroundImageScale9Enabled(true)
+    listView:setContentSize(cc.size(400, 600))
+    listView:setPosition(cc.p((widgetSize.width - backgroundSize.width) / 2.0 +
+                                 (backgroundSize.width - listView:getContentSize().width) / 2.0,
+                             (widgetSize.height - backgroundSize.height) / 2.0 +
+                                 (backgroundSize.height - listView:getContentSize().height) / 2.0))
+    listView:addEventListener(listViewEvent)
+    listView:addScrollViewEventListener(scrollViewEvent)
+    listView:setAnchorPoint(cc.p(0,0))
+    listView:setPosition(cc.p(0,0))
+    self:addChild(listView)
+
+
+
+	for i=1,10 do
+		local item = ccui.Layout:create()
+		item:setContentSize(100,100)
+        item:setBackGroundColorType(ccui.LayoutBackGroundColorType.solid)
+        item:setBackGroundColor(cc.c3b(math.random(0,255), math.random(0,255), math.random(0,255)))
+		listView:addChild(item)
+		print(i)
+	    local ClipNode = cc.ClippingNode:create()
+	    local maskNode = cc.Node:create()
+	    maskNode:addChild(cc.Sprite:create("mask.png"))
+	    ClipNode:setAlphaThreshold(0)
+	    ClipNode:setStencil(maskNode)
+	    ClipNode:addChild(cc.Sprite:createWithTexture(display.getImage("3DS - Pokemon Battle Trozei - Small Pokemon Icons.png"),
+	    	cc.rect(math.random(1,500),math.random(1,500),100,100)))
+	    ClipNode:setPosition(cc.p(50,50))
+
+	    local target = cc.RenderTexture:create(100, 100, cc.TEXTURE2_D_PIXEL_FORMAT_RGB_A8888)
+		target:begin()
+		ClipNode:visit()
+	    target:endToLua()
+	    target:setPosition(50,50)
+
+		item:addChild(target)
+	end
+
+end
+function MainScene:LoadImg( ... )
+	display.loadImage("3DS - Pokemon Battle Trozei - Small Pokemon Icons.png")
+end
+function MainScene:createMonsterLayer( ... )
+	-- add HelloWorld label
+	local self = cc.Layer:create()
     local text = cc.Label:createWithSystemFont("Hello World", "Arial", 40)
         :move(display.cx, display.cy + 200)
         :addTo(self)
 
 
-    display.loadImage("3DS - Pokemon Battle Trozei - Small Pokemon Icons.png")
 	local allMonster = {}
 	for i=1,9 do
 		local r = math.random(0,24*31+15)
@@ -91,9 +160,8 @@ function MainScene:onCreate()
 	touchListener:registerScriptHandler(onTouchMoved, cc.Handler.EVENT_TOUCH_MOVED);
 	local eventDispatcher = touchLayer:getEventDispatcher();
 	eventDispatcher:addEventListenerWithSceneGraphPriority(touchListener, touchLayer);
+	return self
 end
-
-
 
 return MainScene;
 
