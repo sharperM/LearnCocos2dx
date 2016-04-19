@@ -1,6 +1,7 @@
-
+require "app.logic.log"
 local MainScene = class("MainScene", cc.load("mvc").ViewBase)
 function MainScene:onCreate()
+	log("MainScene:onCreate()")
     -- add background image
     display.newSprite("HelloWorld.png")
         :move(display.center)
@@ -29,9 +30,9 @@ function MainScene:onCreate()
     local listView = ccui.ListView:create()
     -- set list view ex direction
     listView:setDirection(ccui.ScrollViewDir.vertical)
-    listView:setBounceEnabled(true)
+    -- listView:setBounceEnabled(true)
     -- listView:setBackGroundImage("cocosui/green_edit.png")
-    listView:setBackGroundImageScale9Enabled(true)
+    -- listView:setBackGroundImageScale9Enabled(true)
     listView:setContentSize(cc.size(400, 600))
     listView:setPosition(cc.p((widgetSize.width - backgroundSize.width) / 2.0 +
                                  (backgroundSize.width - listView:getContentSize().width) / 2.0,
@@ -46,12 +47,12 @@ function MainScene:onCreate()
 
 
 	for i=1,10 do
+		log(i,i+100)
 		local item = ccui.Layout:create()
-		item:setContentSize(100,100)
+		item:setContentSize(400,100)
         item:setBackGroundColorType(ccui.LayoutBackGroundColorType.solid)
         item:setBackGroundColor(cc.c3b(math.random(0,255), math.random(0,255), math.random(0,255)))
 		listView:addChild(item)
-		print(i)
 	    local ClipNode = cc.ClippingNode:create()
 	    local maskNode = cc.Node:create()
 	    maskNode:addChild(cc.Sprite:create("mask.png"))
@@ -61,13 +62,14 @@ function MainScene:onCreate()
 	    	cc.rect(math.random(1,500),math.random(1,500),100,100)))
 	    ClipNode:setPosition(cc.p(50,50))
 
-	    local target = cc.RenderTexture:create(100, 100, cc.TEXTURE2_D_PIXEL_FORMAT_RGB_A8888)
-		target:begin()
-		ClipNode:visit()
-	    target:endToLua()
-	    target:setPosition(50,50)
+	    -- local target = cc.RenderTexture:create(100, 100, cc.TEXTURE2_D_PIXEL_FORMAT_RGB_A8888)
+		-- target:begin()
+		-- ClipNode:visit()
+		-- target:endToLua()
+		-- target:setPosition(50,50)
+		-- item:addChild(target)
 
-		item:addChild(target)
+		item:addChild(ClipNode)
 	end
 
 end
